@@ -1,23 +1,22 @@
 import random
 import connect4 as game
-#import tictactoe as game
 board=game.Board()
 def reflect(l, columns):
     result=[]
     for i in range(0, len(l), columns):result+=l[i:i+columns][::-1]
     return result
-def compute(depth):
+def compute(depth, state=None):
     global cache
     global initDepth
-    tree, cache, initDepth=board.initTree(), {}, depth
+    tree, cache, initDepth=board.initTree(state), {}, depth
     if depth<1:return board.randomMove(tree["state"], tree["turn"])
     temp=board.enumerateMoves(tree["state"], tree["turn"])
     if len(temp)==1:return list(temp)[0]
     tree.update(temp)
     search(depth, tree)
     #print("\nCache:", cache)
-    print("\nEval:", tree["eval"])
-    print("\nBranch evals:", {i:tree[i]["eval"] for i in tree if i not in ["state", "turn", "eval"]})
+    #print("\nEval:", tree["eval"])
+    #print("\nBranch evals:", {i:tree[i]["eval"] for i in tree if i not in ["state", "turn", "eval"]})
     return random.choice([i for i in tree if i not in ["state", "turn", "eval"] if tree[i]["eval"]==tree["eval"]])
 def search(depth, node):
     mirror=tuple(reflect(node["state"], 7 if game.__name__=="connect4" else 3 if game.__name__=="tictactoe" else 1))
@@ -31,4 +30,3 @@ def search(depth, node):
         if len(node)>3:node["eval"]=board.eval(node, (initDepth-depth)%2==0)
         cache[state]={i:node[i] for i in ["state", "turn", "eval"]}
     return cache[state]
-board.play()
