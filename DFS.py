@@ -9,12 +9,13 @@ def compute(depth, state=None):
     global cache
     global initDepth
     tree, cache, initDepth=board.initTree(state), {}, depth
-    if depth<1:return board.randomMove(tree["state"], tree["turn"])
-    temp=board.enumerateMoves(tree["state"], tree["turn"])
+    if depth<1:return board.randomMove(tree["state"])
+    temp=board.enumerateMoves(tree["state"])
     if len(temp)==1:return list(temp)[0]
     tree.update(temp)
     search(depth, tree)
     #print("\nCache:", cache)
+    cache={}
     #print("\nEval:", tree["eval"])
     #print("\nBranch evals:", {i:tree[i]["eval"] for i in tree if i not in ["state", "turn", "eval"]})
     return random.choice([i for i in tree if i not in ["state", "turn", "eval"] if tree[i]["eval"]==tree["eval"]])
@@ -23,7 +24,7 @@ def search(depth, node):
     if mirror in cache:return cache[mirror]
     state=tuple(node["state"])
     if state not in cache:
-        if depth!=initDepth:node.update(board.enumerateMoves(node["state"], node["turn"], evaluation=node["eval"]))
+        if depth!=initDepth:node.update(board.enumerateMoves(node["state"], evaluation=node["eval"]))
         if depth>1:
             for i in node:
                 if i not in ["state", "turn", "eval"]:node[i]=search(depth-1, node[i])
