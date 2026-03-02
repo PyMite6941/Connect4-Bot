@@ -1,10 +1,11 @@
-from connect4 import Game
-from q_learning import QLearning
-from socket import Socket
+from pixel.connect4 import Game
+from pixel.q_learning import QLearning
 
 class Play:
     def __init__(self,p1,p2):
         self.game = Game()
+        self.q_learning = QLearning()
+
         self.p1 = p1
         self.p2 = p2
         self.current = p1
@@ -24,20 +25,3 @@ class Play:
         
     def swap_turns(self):
         self.current = 'smartBot' if self.current == 'Pixel' else 'Pixel'
-        
-    def play_game(self,training=True):
-        ql = QLearning()
-        ql.load_Q()
-        socket = Socket("moves.txt")
-        while not self.game.is_over():
-            state = self.game.get_state()
-            valid_moves = self.game.possible_moves()
-            if training:
-                move = ql.choose_moves(state,valid_moves,training=True)
-            else:
-                move = socket.get_move(self.game.turn)
-            self.game.make_move(move,self.game.turn)
-            reward = self.reward(self.game.board,self.game.turn)
-            next_state = self.game.get_state()
-            ql.update_Q(state,move,reward,next_state,self.game.possible_moves())
-        ql.save_Q()
