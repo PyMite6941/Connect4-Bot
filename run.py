@@ -8,6 +8,12 @@ def play_game(p1,p2,training=True):
     play.q_learning.load_Q()
     total_reward = 0.0
     while not play.game.is_terminal(play.current)['end']:
+        result = play.game.is_terminal(play.current)
+        if result['end']:
+            if training:
+                play.q_learning.update_Q(state, action, reward, None, valid_moves)
+            print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
+            break
         if play.current == 'Pixel':
             state = play.game.get_state()
             valid_moves = play.game.possible_moves()
@@ -21,12 +27,6 @@ def play_game(p1,p2,training=True):
             play.game.make_move(action,play.current)
         reward = play.reward(play.current)
         total_reward += reward
-        result = play.game.is_terminal(play.current)
-        if result['end']:
-            if training:
-                play.q_learning.update_Q(state, action, reward, None, valid_moves)
-            print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
-            break
         play.log_move()
         play.swap_turns()
 
