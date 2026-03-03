@@ -31,4 +31,4 @@ class Play:
         self.current = 'smartBot' if self.current == 'Pixel' else 'Pixel'
 
     def log_move(self):
-        self.log.log_move(self.game.get_state(), self.current)
+        self.log.write(self.game.get_state())

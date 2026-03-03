@@ -1,9 +1,11 @@
 class Log:
-    def __init__(self,filename='log.txt'):
+    def __init__(self,filename='log.txt',directory='logs/'):
         self.filename = filename
+        self.directory = directory
+        self.filepath = self.directory + self.filename
     
     def write(self,board):
-        with open(self.filename,'a') as file:
+        with open(self.filepath,'a') as file:
             for row in board:
                 file.write(' '.join(str(cell) for cell in row)+'\n')
             file.write('\n')
