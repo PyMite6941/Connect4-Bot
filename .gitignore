@@ -1,4 +1,5 @@
 .venv/
 memory/
 __pycache__/
+logs/
 moves.txt

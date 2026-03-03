@@ -27,6 +27,7 @@ def play_game(p1,p2,training=True):
                 play.q_learning.update_Q(state, action, reward, None, valid_moves)
             print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
             break
+        play.log_move()
         play.swap_turns()
 
 if __name__ == "__main__":
