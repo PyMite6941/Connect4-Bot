@@ -3,6 +3,7 @@ class Log:
         self.filename = filename
         self.directory = directory
         self.filepath = self.directory + self.filename
+        with open(self.filepath, "w") as file:file.write("")
     
     def write(self,board):
         with open(self.filepath,'a') as file:
