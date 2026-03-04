@@ -6,8 +6,9 @@ class Log:
     
     def write(self,board):
         with open(self.filepath,'a') as file:
-            for row in board:
-                file.write(' '.join(str(cell) for cell in row)+'\n')
+            #for row in board:
+                #file.write(' '.join(str(cell) for cell in row)+'\n')
+            for i in range(0, 42, 7):file.write(" ".join(str(cell)[0] for cell in board[i:i+7])+"\n")
             file.write('\n')
             file.write('-'*20+'\n')
             file.write('\n')    

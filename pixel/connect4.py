@@ -25,6 +25,17 @@ class Game:
         return len(self.possible_moves()) == 0
     
     def check_win(self,player):
+        state=[]
+        for row in self.board:state+=[{self.p1: 1, self.p2: 2, 0: 0}[i] for i in row]
+        def connect(l):
+            for i in l:
+                if i!=l[0]:return False
+            return True
+        result=0
+        for i in range(len(state)-3):
+            if (i<21 and connect(state[i:i+22:7]) or i%7<4 and connect(state[i:i+4]) or i<18 and i%7<4 and connect(state[i:i+25:8]) or i<21 and i%7>2 and connect(state[i:i+19:6])) and state[i]!=0:
+                result=state[i]
+        return {"success": {self.p1: 1, self.p2: 2, 0: 0}[player]==result}
         if player == self.p1:
             player_value = self.p1_value
         else:
