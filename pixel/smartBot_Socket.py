@@ -8,7 +8,7 @@ class Socket:
 
     def game_to_dfs_state(self):
         flat = []
-        characters = {self.p1: 1,self.p2: 2,0:0}
+        characters = {self.p1:1,self.p2:2,0:0}
         for r in self.game.board:
             for item in r:
                 flat.append(characters.get(item,0))

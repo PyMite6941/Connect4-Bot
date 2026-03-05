@@ -7,7 +7,7 @@ class Log:
     def write(self,board):
         with open(self.filepath,'a') as file:
             for row in board:
-                file.write(' '.join(str(cell) for cell in row)+'\n')
+                file.write(''.join(cell for cell in row))
             file.write('\n')
             file.write('-'*20+'\n')
-            file.write('\n')    
+            file.write('\n')
