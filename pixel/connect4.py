@@ -37,15 +37,6 @@ class Game:
                 result=state[i]
                 break
         return {"success": {self.p1: 1, self.p2: 2, 0: 0}[player]==result}
-        if player == self.p1:
-            player_value = self.p1_value
-        else:
-            player_value = self.p2_value
-        for r in range(self.rows):
-            for c in range(self.cols):
-                if all(self.board[r][c+i] == player_value for i in range(4) if c+i < self.cols) or all(self.board[r+i][c] == player_value for i in range(4) if r+i < self.rows) or all(self.board[r+i][c+i] == player_value for i in range(4) if r+i < self.rows and c+i < self.cols) or all(self.board[r-i][c-i] == player_value for i in range(4) if r-i >= 0 and c-i >= 0):
-                    return {'success': True}
-        return {'success': False}
 
     def get_state(self):
         return tuple(self.board[r][c] for r in range(self.rows) for c in range(self.cols))
