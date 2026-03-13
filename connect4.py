@@ -60,7 +60,7 @@ class Board:
     def winDetection(self, state):
         for i in range(len(state)-3):
             if (i<21 and connect(state[i:i+22:7]) or i%7<4 and connect(state[i:i+4]) or i<18 and i%7<4 and connect(state[i:i+25:8]) or i<21 and i%7>2 and connect(state[i:i+19:6])) and state[i]!=0:return state[i]
-        return 0
+        return 0 if 0 in state else -1
     def eval(self, branch, ownTurn):
         evals, temp=[branch[i]["eval"] for i in branch if i not in ["state", "turn", "eval"]], [1, -1][branch["turn"]%2]
         if ownTurn:return [max, max, min][temp](evals)
@@ -75,7 +75,7 @@ class Board:
             if invalidInput:window.blit(pygame.font.Font(None, 30).render("Please input either 1 or 2.", True, (255, 0, 0)), (45, 350))
         else:
             temp=self.winDetection(self.state)
-            window.blit(pygame.font.Font(None, 30).render((f"{'Player' if humanPlayer!=0 else 'Computer'} {temp} wins!" if __name__=="__main__" or humanPlayer==0 else "The player wins!" if temp==humanPlayer else "The computer wins!") if temp!=0 else "It's a tie." if 0 not in self.state else "Click on a column to play in that column." if humanPlayer!=0 else "", True, (255, 255, 255)), (40, 25))
+            window.blit(pygame.font.Font(None, 30).render(("Click on a column to play in that column." if humanPlayer!=0 else "") if temp==0 else "It's a tie." if temp==-1 else f"{'Player' if humanPlayer!=0 else 'Computer'} {temp} wins!" if __name__=="__main__" or humanPlayer==0 else "The player wins!" if temp==humanPlayer else "The computer wins!", True, (255, 255, 255)), (40, 25))
             if __name__!="__main__" and humanPlayer!=0:
                 window.blit(pygame.font.Font(None, 30).render("You are:", True, (255, 255, 255)), (500, 25))
                 pygame.draw.circle(window, (255, 255 if humanPlayer==1 else 0, 0), (610, 35), 20)
@@ -107,7 +107,7 @@ class Board:
                         if invalidInput:textInput=""
                         textInput+=pygame.key.name(event.key)
                         invalidInput=False
-            if status=="playing" and self.winDetection(self.state)==0 and 0 in self.state:
+            if status=="playing" and self.winDetection(self.state)==0:
                 if __name__!="__main__" and self.turn%2+1!=humanPlayer:
                     slots=self.state[:7].count(0)
                     clock.tick()
@@ -121,6 +121,6 @@ class Board:
                 if move in self.enumerateMoves(self.state, False):
                     self.state=self.applyMove(self.state, self.turn, move)
                     self.turn+=1
-                    if __name__!="__main__" and (self.turn>=42 or self.winDetection(self.state)!=0):print("\nAverage time taken:", time/(1000*(self.turn if humanPlayer==0 else self.turn//2 if humanPlayer==1 else (self.turn+1)//2)), "\n")
+                    if __name__!="__main__" and self.winDetection(self.state)!=0:print("\nAverage time taken:", time/(1000*(self.turn if humanPlayer==0 else self.turn//2 if humanPlayer==1 else (self.turn+1)//2)), "\n")
             self.display(screen, humanPlayer)
 if __name__=="__main__":Board().play()

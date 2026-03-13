@@ -27,7 +27,9 @@ def search(depth, node):
         if depth!=initDepth:node.update(board.enumerateMoves(node["state"], evaluation=node["eval"]))
         if depth>1:
             for i in node:
-                if i not in ["state", "turn", "eval"]:node[i]=search(depth-1, node[i])
+                if i not in ["state", "turn", "eval"]:
+                    node[i]=search(depth-1, node[i])
+                    if(node[i]["eval"]==[1, -1][node["turn"]%2]):break
         if len(node)>3:node["eval"]=board.eval(node, (initDepth-depth)%2==0)
         cache[state]={i:node[i] for i in ["state", "turn", "eval"]}
     return cache[state]
