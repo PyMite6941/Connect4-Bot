@@ -8,7 +8,7 @@ class Play:
         self.game = Game(p1,p2)
         self.q_learning = QLearning()
         self.socket = Socket(self.game,p1,p2)
-        #self.log = Log()
+        self.log = Log()
 
         self.p1 = p1
         self.p2 = p2
@@ -34,5 +34,5 @@ class Play:
     def swap_turns(self):
         self.current = 'smartBot' if self.current == 'Pixel' else 'Pixel'
 
-    #def log_move(self):
-        #self.log.write(self.game.get_state())
+    def log_move(self):
+        self.log.write(self.game.get_state())

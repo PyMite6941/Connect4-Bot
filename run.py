@@ -12,7 +12,7 @@ def play_game(p1,p2,training=True):
         if result['end']:
             action = 0
             if training:
-                play.q_learning.update_Q(state, action, reward, None, valid_moves)
+                play.q_learning.update_Q(state, None, reward, None, valid_moves)
             print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
             break
         if play.current == 'Pixel':
@@ -24,10 +24,16 @@ def play_game(p1,p2,training=True):
                 move = play.socket.get_dfs_move()
             play.game.make_move(move,play.current)
         else:
-            Play.socket_get_smartBot_move()
+            play.socket_get_smartBot_move()
+        result = play.game.is_terminal(play.current)
+        if result['end']:
+            if training:
+                play.q_learning.update_Q(state, None, reward, None, valid_moves)
+            print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
+            break
         reward = play.reward(play.current)
         total_reward += reward
-        #play.log_move()
+        play.log_move()
         play.swap_turns()
 
 if __name__ == "__main__":
