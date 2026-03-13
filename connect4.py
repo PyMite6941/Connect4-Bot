@@ -1,5 +1,5 @@
-import __main__, random, pygame
-from pygame.locals import *
+import __main__, random#, pygame
+#from pygame.locals import *
 def connect(l):
     for i in l:
         if i!=l[0]:return False
