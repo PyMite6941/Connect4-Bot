@@ -12,7 +12,7 @@ def play_game(p1,p2,training=True):
         if result['end']:
             action = 0
             if training:
-                play.q_learning.update_Q(state, None, reward, None, valid_moves)
+                play.q_learning.save_Q(state, None, reward, None, valid_moves)
             print(f"Game Over! Winner: {play.game.winner}, Total Reward: {total_reward}")
             break
         if play.current == 'Pixel':

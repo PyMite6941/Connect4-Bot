@@ -36,7 +36,7 @@ class Game:
             if (i<21 and connect(state[i:i+22:7]) or i%7<4 and connect(state[i:i+4]) or i<18 and i%7<4 and connect(state[i:i+25:8]) or i<21 and i%7>2 and connect(state[i:i+19:6])) and state[i]!=0:
                 result=state[i]
                 break
-        return {"success": {self.p1: 1, self.p2: 2, 0: 0}[player]==result}
+            return {"success": {self.p1: 1, self.p2: 2, 0: 0}[player]==result}
         if player == self.p1:
             player_value = self.p1_value
         else:

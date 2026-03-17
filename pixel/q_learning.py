@@ -8,7 +8,7 @@ class QLearning:
         self.gamma = 0.9 # Discount factor
         self.epsilon = 0.9 # Reliance on advisors
 
-        self.default_path = os.path.join("memory","qtable.pkl")
+        self.default_path = "q_table.pkl"
 
     def get_Q(self,state,action):
         return self.Q.get((state,action),0.0)
@@ -30,20 +30,15 @@ class QLearning:
             return random.choice(valid_actions) # explore
         return self.best_move(state,valid_actions) # exploit
     
-    def save_Q(self,path=None):
+    def save_Q(self):
         import pickle
-        os.makedirs(os.path.dirname(self.default_path),exist_ok=True)
-        if path is None:
-            path = self.default_path
-        with open(path,"wb") as file:
+        with open(self.default_path,"wb") as file:
             pickle.dump(self.Q,file)
 
-    def load_Q(self,path=None):
+    def load_Q(self):
         import pickle
-        if path is None:
-            path = self.default_path
         try:
-            with open(path,"rb") as file:
+            with open(self.default_path,"rb") as file:
                 self.Q = pickle.load(file)
         except FileNotFoundError:
             self.Q = {}
