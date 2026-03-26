@@ -12,7 +12,7 @@ class Board:
     def initBoard(self):self.state=(0,)*self.rows*self.columns
     def initTree(self, state=...):
         if state==...:state=self.state
-        return {"state":self.state, "turn":self.turn, "eval":(0, 0)}
+        return {"state":state, "turn":len(state)-state.count(0), "eval":0}
     def enumerateMoves(self, state, reasonable=True, *, evaluation=0):
         turn=len(state)-state.count(0)
         if evaluation!=0 or self.winDetection(state)!=0:return {}
