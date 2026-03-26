@@ -1,6 +1,7 @@
 class Log:
     def __init__(self,filename='log.txt'):
         self.filename = filename
+        with open(self.filename, "w") as file:file.write("")
     
     def write(self,board):
         with open(self.filename,'a') as file:
