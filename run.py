@@ -23,8 +23,10 @@ def play_game(p1,p2,training=True):
             else:
                 move = play.socket.get_dfs_move()
             play.game.make_move(move,play.current)
+            play.log_move()
         else:
             play.socket_get_smartBot_move()
+            play.log_move()
         result = play.game.is_terminal(play.current)
         if result['end']:
             if training:
@@ -33,7 +35,6 @@ def play_game(p1,p2,training=True):
             break
         reward = play.reward(play.current)
         total_reward += reward
-        play.log_move()
         play.swap_turns()
 
 if __name__ == "__main__":
