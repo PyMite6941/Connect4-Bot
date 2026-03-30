@@ -52,7 +52,8 @@ class Board:
                         result[i]={"state":temp, "turn":turn+1, "eval":(1, turn%2+1)}
                         break
                 if len(result)>0:break
-        if len(result)==0:result={i:{"state":self.applyMove(state, turn, i), "turn":turn+1, "eval":(0, 0)} for i in (options if len(options)>0 else range(self.columns)) if state[i]==0}
+        if len(result)==0:result={i:{"state":self.applyMove(state, turn, i), "turn":turn+1, "eval":(0, 0)} for i in options}
+        if len(result)==0:result={i:{"state":self.applyMove(state, turn, i), "turn":turn+1, "eval":(1, (turn+1)%2+1)} for i in range(self.columns) if state[i]==0}
         return result
     def randomMove(self, state):return random.choice(tuple(self.enumerateMoves(state, False)))
     def applyMove(self, state, turn, move):
