@@ -1,9 +1,6 @@
 import __main__, random#, pygame
 #from pygame.locals import *
-def connect(l):
-    for i in l:
-        if i!=l[0]:return False
-    return True
+def connect(l):return l==[l[0]]*len(l)
 class Board:
     def __init__(self, *, rows=6, columns=7, connect=4):
         self.rows, self.columns, self.connect=rows, columns, connect
