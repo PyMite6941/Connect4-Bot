@@ -1,6 +1,5 @@
 import __main__, random#, pygame
 #from pygame.locals import *
-def connect(l):return l==[l[0]]*len(l)
 class Board:
     def __init__(self, *, rows=6, columns=7, connect=4):
         self.rows, self.columns, self.connect=rows, columns, connect
@@ -58,18 +57,26 @@ class Board:
         state[max(i for i in range(move, len(state), self.columns) if state[i]==0)]=turn%2+1
         return state
     def winDetection(self, state, lastPlayed=-1):
+        def connect(l):return l==[l[0]]*len(l)
+        def checkSpot(column):
+            temp=tuple(i for i in range(column, len(state), self.columns) if state[i]!=0)
+            if len(temp)==0:return 0
+            position=min(temp)
+            if position<self.columns*(self.rows-self.connect+1) and connect(state[position:position+self.columns*self.connect:self.columns]):return state[position]
+            for i in range(max(position-self.connect+1, position//self.columns*self.columns), min(position, (position//self.columns+1)*self.columns-self.connect)+1):
+                if connect(state[i:i+self.connect]):return state[position]
+            for i in range(position-(self.columns+1)*(self.connect-1), position+1, self.columns+1):
+                if 0<=i<len(state) and i<self.columns*(self.rows-self.connect+1) and i%self.columns<=self.columns-self.connect and connect(state[i:i+(self.columns+1)*self.connect:self.columns+1]):return state[position]
+            for i in range(position-(self.columns-1)*(self.connect-1), position+1, self.columns-1):
+                if 0<=i<len(state) and i<self.columns*(self.rows-self.connect+1) and i%self.columns>=self.connect-1 and connect(state[i:i+(self.columns-1)*self.connect:self.columns-1]):return state[position]
+            return 0
         if lastPlayed==-1:
-            for i in range(len(state)-3):
-                if (i<self.columns*(self.rows-self.connect+1) and connect(state[i:i+self.columns*self.connect:self.columns]) or i%self.columns<=self.columns-self.connect and connect(state[i:i+self.connect]) or i<self.columns*(self.rows-self.connect+1) and i%self.columns<=self.columns-self.connect and connect(state[i:i+(self.columns+1)*self.connect:self.columns+1]) or i<self.columns*(self.rows-self.connect+1) and i%self.columns>=self.connect-1 and connect(state[i:i+(self.columns-1)*self.connect:self.columns-1])) and state[i]!=0:return state[i]
+            for i in range(self.columns):
+                temp=checkSpot(i)
+                if temp!=0:return temp
             return 0 if 0 in state else -1
-        position=min(i for i in range(lastPlayed, len(state), self.columns) if state[i]!=0)
-        if position<self.columns*(self.rows-self.connect+1) and connect(state[position:position+self.columns*self.connect:self.columns]):return state[position]
-        for i in range(max(position-self.connect+1, position//self.columns*self.columns), min(position, (position//self.columns+1)*self.columns-self.connect)+1):
-            if connect(state[i:i+self.connect]):return state[position]
-        for i in range(position-(self.columns+1)*(self.connect-1), position+1, self.columns+1):
-            if 0<=i<len(state) and i<self.columns*(self.rows-self.connect+1) and i%self.columns<=self.columns-self.connect and connect(state[i:i+(self.columns+1)*self.connect:self.columns+1]):return state[position]
-        for i in range(position-(self.columns-1)*(self.connect-1), position+1, self.columns-1):
-            if 0<=i<len(state) and i<self.columns*(self.rows-self.connect+1) and i%self.columns>=self.connect-1 and connect(state[i:i+(self.columns-1)*self.connect:self.columns-1]):return state[position]
+        temp=checkSpot(lastPlayed)
+        if temp!=0:return temp
         return 0 if 0 in state else -1
     def eval(self, node, ownTurn):
         evals, temp=tuple(node[i][0] for i in node if i not in ("state", "turn", "eval")), tuple(node[i][1] for i in node if i not in ("state", "turn", "eval"))
