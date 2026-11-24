@@ -1,0 +1,3 @@
+torch>=2.0          # Clyde's neural net (clyde/dqn.py)
+rich>=13.0          # train_clyde.py dashboard
+questionary>=2.0    # train_clyde.py menus

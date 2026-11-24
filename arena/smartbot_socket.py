@@ -1,4 +1,4 @@
-import DFS
+from smartbot import DFS
 
 class Socket:
     def __init__(self,game,p1,p2):

@@ -1,5 +1,5 @@
 import random
-import connect4 as game
+from . import connect4 as game
 board=game.Board()
 def compute(depth, state=[]):
     tree, cache, initDepth=board.initTree(state), {}, depth

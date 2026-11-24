@@ -8,7 +8,7 @@ class QLearning:
         self.gamma = 0.9 # Discount factor
         self.epsilon = 0.9 # Reliance on advisors
 
-        self.default_path = "q_table.pkl"
+        self.default_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "q_table.pkl")
 
     def get_Q(self,state,action):
         return self.Q.get((state,action),0.0)
@@ -40,5 +40,5 @@ class QLearning:
         try:
             with open(self.default_path,"rb") as file:
                 self.Q = pickle.load(file)
-        except FileNotFoundError:
+        except (FileNotFoundError, EOFError):
             self.Q = {}
