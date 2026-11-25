@@ -6,7 +6,7 @@
     python run.py -n 100 --eval --search-depth 3   # let Clyde look 3 plies ahead
     python run.py --agent q            # old tabular Q-learning agent
 
-For long automated training with a curriculum, use train.py instead.
+For long automated training with a curriculum, use train_clyde.py instead.
 """
 import argparse
 import random

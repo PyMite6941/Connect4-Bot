@@ -240,7 +240,7 @@ class DQNAgent:
             self.optimizer.load_state_dict(ckpt["optimizer"])
         except (RuntimeError, ValueError) as e:
             raise SystemExit(f"{path} was saved by an older network layout and can't be loaded.\n"
-                             f"Start over with:  python train.py --fresh\n({e.__class__.__name__})")
+                             f"Start over with:  python train_clyde.py --fresh\n({e.__class__.__name__})")
         self.epsilon, self.steps = ckpt["epsilon"], ckpt["steps"]
         self.extra = ckpt.get("extra", {})
         return self.extra

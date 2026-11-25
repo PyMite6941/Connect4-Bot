@@ -10,8 +10,7 @@ The point of the project is the comparison: a hand-written search engine that kn
 ## Layout
 
 ```
-train_clyde.py      interactive trainer (menus + live dashboard) - start here
-train.py            the training loop itself; scriptable CLI
+train_clyde.py      training: interactive menus with no args, headless with flags
 run.py              play N games, Clyde vs smartBot (quick checks / eval)
 arena/              match harness - wires the two engines together
   match.py          Play: turn order, rewards, logging
@@ -36,8 +35,7 @@ Generated files (`clyde/dqn.pt`, `clyde/dqn_best.pt`, `clyde/q_table.pkl`, `clyd
 pip install -r requirements.txt
 
 python train_clyde.py              # interactive: pick a duration, tune settings, watch it train, evaluate
-
-python train.py --hours 8          # train the DQN; stop/resume any time with Ctrl+C
+python train_clyde.py --hours 8    # headless (scripts / Task Scheduler); stop/resume any time with Ctrl+C
 python run.py -n 100 --eval        # greedy Clyde vs smartBot depth 4, no learning
 python run.py -n 50 --eval --depth 2
 python run.py --agent q -n 500     # the old tabular agent
@@ -45,7 +43,7 @@ python run.py -n 100 --eval --search-depth 3   # same net, looking 3 plies ahead
 python -m unittest discover tests  # unit tests
 ```
 
-`train.py` starts Clyde against a random opponent (smartBot depth 0). Every 250 games it plays 100 greedy games at the current depth; at a 75% win rate it moves up a depth (to `--max-depth`, default 5). Each evaluation is logged to `clyde/training_log.csv`; the best weights at the hardest depth reached are kept in `clyde/dqn_best.pt`. `--fresh` starts over.
+Training starts Clyde against a random opponent (smartBot depth 0). Every 250 games it plays 100 greedy games at the current depth; at a 75% win rate it moves up a depth (to `--max-depth`, default 5). Each evaluation is logged to `clyde/training_log.csv`; the best weights at the hardest depth reached are kept in `clyde/dqn_best.pt`. `--fresh` starts over.
 
 ## The search engine
 
